@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mrvokintos | Bio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #050a14;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent-blue: #4a9eff;
+            --text-main: #f0f0f0;
+            --text-dim: #94a3b8;
+            --border-glow: rgba(74, 158, 255, 0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 15%, rgba(74, 158, 255, 0.2) 0%, transparent 60%),
+                linear-gradient(180deg, #050a14 0%, #0a192f 100%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container { width: 90%; max-width: 650px; padding: 60px 0; text-align: center; }
+
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 0 30px var(--border-glow);
+            margin-bottom: 20px;
+        }
+
+        h1 { 
+            font-size: 2.8rem; 
+            margin: 10px 0;
+            background: linear-gradient(to bottom, #fff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle { 
+            color: var(--accent-blue); 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--accent-blue); transform: translateY(-3px); }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .btn i { 
+            font-size: 1.2rem; 
+            color: var(--accent-blue);
+            width: 20px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 5px 20px rgba(74, 158, 255, 0.4);
+        }
+        
+        .btn:hover i { color: white; }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .item { 
+            font-size: 0.9rem; 
+            color: var(--text-dim);
+            border-left: 2px solid rgba(74, 158, 255, 0.2);
+            padding-left: 12px;
+        }
+        
+        .item b { color: var(--text-main); display: block; margin-top: 2px; }
+
+        .footer { margin-top: 40px; opacity: 0.5; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://github.com/mrvokintos.png" alt="Profile" class="profile-img">
+        <h1>mrvokintos</h1>
+        <div class="subtitle">Engineer & Software Tester</div>
+
+        <div class="card">
+            <span class="section-title">About Me</span>
+            <p style="margin: 0; color: var(--text-dim); line-height: 1.6;">
+                Wassup! I'm an engineer and software tester. Bilingual in Eng/Rus. Idk what else to write here lol
+            </p>
+        </div>
+
+        <div class="card">
+            <span class="section-title">Contacts & Follow</span>
+            <div class="links-grid">
+                <a href="https://t.me/mr_vokintos" class="btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
+                <a href="https://github.com/mrvokintos" class="btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="https://4pda.to/forum/index.php?showuser=11599467" class="btn"><i class="fa-solid fa-code"></i> 4PDA</a>
+                <a href="https://x.com/mr_vokintos" class="btn"><i class="fa-brands fa-x-twitter"></i> X / Twitter</a>
+                <a href="https://steamcommunity.com/id/mr_vokintos" class="btn"><i class="fa-brands fa-steam"></i> Steam</a>
+                <a href="https://t.me/mrvokintos" class="btn"><i class="fa-solid fa-bullhorn"></i> Blog</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="section-title">PC Specs</span>
+            <div class="specs-grid">
+                <div class="item">CPU <b>Ryzen 5 7600X + OC</b></div>
+                <div class="item">RAM <b>32GB DDR5 6400mhz</b></div>
+                <div class="item">GPU <b>RTX 4070 TI SUPER 16GB</b></div>
+                <div class="item">Mouse <b>Logitech G502 X</b></div>
+                <div class="item">OS <b>CachyOS 🐧</b></div>
+                <div class="item">Keyboard <b>Corsair K70 TKL</b></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="section-title">Devices</span>
+            <div class="specs-grid">
+                <div class="item">Primary <b>Nothing Phone (3a)</b></div>
+                <div class="item">Secondary <b>Tecno Pova 6 Pro</b></div>
+                <div class="item">Legacy <b>Xiaomi Mi A3</b></div>
+                <div class="item">Audio <b>Redmi Buds 4 Lite</b></div>
+            </div>
+        </div>
+
+        <div class="footer">Vibecoder | 2026</div>
+    </div>
+</body>
+</html>
