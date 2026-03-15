@@ -5,180 +5,960 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mrvokintos | Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --bg-color: #050a14;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --accent-blue: #4a9eff;
-            --text-main: #f0f0f0;
-            --text-dim: #94a3b8;
-            --border-glow: rgba(74, 158, 255, 0.3);
+            --bg-color: #0c1220;
+            --bg-secondary: #111827;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --accent: #4a9eff;
+            --accent2: #7c3aed;
+            --accent3: #06b6d4;
+            --text-main: #eef2ff;
+            --text-dim: #8da2bf;
+            --glow: rgba(74, 158, 255, 0.12);
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 50% 15%, rgba(74, 158, 255, 0.2) 0%, transparent 60%),
-                linear-gradient(180deg, #050a14 0%, #0a192f 100%);
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(74, 158, 255, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #0c1220 0%, #0f1a2e 50%, #0c1220 100%);
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        .container { width: 90%; max-width: 650px; padding: 60px 0; text-align: center; }
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(74, 158, 255, 0.1), transparent 70%);
+            top: -200px; left: 50%;
+            transform: translateX(-50%);
+            animation: float1 12s ease-in-out infinite;
+        }
+
+        .ambient-2 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.06), transparent 70%);
+            bottom: 10%; right: -100px;
+            animation: float2 15s ease-in-out infinite;
+        }
+
+        .ambient-3 {
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.05), transparent 70%);
+            bottom: 30%; left: -100px;
+            animation: float3 18s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(40px); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-50px) translateX(-30px); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(30px); }
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(74, 158, 255, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: left 0.3s ease, top 0.3s ease;
+        }
+
+        .main {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-dot:hover, .nav-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+            transform: scale(1.3);
+        }
+
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            white-space: nowrap;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+
+        .nav-dot:hover::after { opacity: 1; }
+
+        /* ── Profile ── */
+        .profile-section {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 28px;
+        }
+
+        .avatar-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent3), var(--accent)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .avatar-ring-glow {
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+            filter: blur(20px);
+            opacity: 0.25;
+            animation: spin 4s linear infinite;
+        }
 
         .profile-img {
-            width: 130px;
-            height: 130px;
+            width: 140px; height: 140px;
             border-radius: 50%;
-            border: 2px solid var(--accent-blue);
-            box-shadow: 0 0 30px var(--border-glow);
-            margin-bottom: 20px;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            transition: 0.5s;
         }
 
-        h1 { 
-            font-size: 2.8rem; 
-            margin: 10px 0;
-            background: linear-gradient(to bottom, #fff, var(--accent-blue));
+        .avatar-wrapper:hover .profile-img {
+            transform: scale(1.05);
+        }
+
+        .name {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: gradient-shift 5s ease-in-out infinite;
         }
 
-        .subtitle { 
-            color: var(--accent-blue); 
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 3px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            margin-bottom: 40px;
         }
 
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--accent);
+            margin-left: 4px;
+            animation: blink-cursor 0.8s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink-cursor { 50% { opacity: 0; } }
+
+        .bio-text {
+            margin-top: 20px;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .bio-text .highlight {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            font-size: 0.72rem;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 5px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(74, 158, 255, 0.12);
+            background: rgba(74, 158, 255, 0.04);
+            color: var(--accent);
+            transition: 0.3s;
+            cursor: default;
+        }
+
+        .tag:hover {
+            background: rgba(74, 158, 255, 0.12);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 158, 255, 0.15);
+        }
+
+        /* ── Cards ── */
         .card {
+            position: relative;
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 28px;
             margin-bottom: 20px;
             text-align: left;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0), rgba(74, 158, 255, 0.1), rgba(124, 58, 237, 0.08), rgba(74, 158, 255, 0));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(74, 158, 255, 0.12);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 0 40px rgba(74, 158, 255, 0.04);
+        }
+
+        .card-glow {
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glow), transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            transform: translate(-50%, -50%);
+        }
+
+        .card:hover .card-glow { opacity: 1; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .section-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            background: rgba(74, 158, 255, 0.08);
+            color: var(--accent);
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Links ── */
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            padding: 14px 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.03));
+            opacity: 0;
             transition: 0.3s;
         }
 
-        .card:hover { border-color: var(--accent-blue); transform: translateY(-3px); }
+        .btn:hover::before { opacity: 1; }
 
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent-blue);
-            margin-bottom: 20px;
-            display: block;
+        .btn-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: 0.3s;
         }
 
-        .links-grid {
+        .btn-telegram .btn-icon { background: rgba(0, 136, 204, 0.12); color: #0088cc; }
+        .btn-github .btn-icon { background: rgba(255, 255, 255, 0.08); color: #e6edf3; }
+        .btn-4pda .btn-icon { background: rgba(74, 158, 255, 0.1); color: var(--accent); }
+        .btn-twitter .btn-icon { background: rgba(255, 255, 255, 0.06); color: #e7e9ea; }
+        .btn-steam .btn-icon { background: rgba(102, 192, 244, 0.1); color: #66c0f4; }
+        .btn-blog .btn-icon { background: rgba(124, 58, 237, 0.1); color: var(--accent2); }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-telegram:hover { border-color: rgba(0, 136, 204, 0.3); box-shadow: 0 8px 30px rgba(0, 136, 204, 0.12); }
+        .btn-github:hover { border-color: rgba(255, 255, 255, 0.15); }
+        .btn-4pda:hover { border-color: rgba(74, 158, 255, 0.3); box-shadow: 0 8px 30px rgba(74, 158, 255, 0.12); }
+        .btn-twitter:hover { border-color: rgba(255, 255, 255, 0.15); }
+        .btn-steam:hover { border-color: rgba(102, 192, 244, 0.3); box-shadow: 0 8px 30px rgba(102, 192, 244, 0.12); }
+        .btn-blog:hover { border-color: rgba(124, 58, 237, 0.3); box-shadow: 0 8px 30px rgba(124, 58, 237, 0.12); }
+
+        .btn .arrow {
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: 0.3s;
+        }
+
+        .btn:hover .arrow { opacity: 1; transform: translateX(0); }
+
+        /* ── Specs ── */
+        .specs-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: 0.3s;
+        }
+
+        .spec-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+
+        .spec-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-dim);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: 0.3s;
+        }
+
+        .spec-item:hover .spec-icon {
+            background: rgba(74, 158, 255, 0.08);
+            color: var(--accent);
+            border-color: rgba(74, 158, 255, 0.15);
+        }
+
+        .spec-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .spec-value { font-size: 0.88rem; font-weight: 500; color: var(--text-main); margin-top: 2px; }
+
+        /* ── Devices ── */
+        .devices-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
-        .btn {
+        .device-card {
+            padding: 20px 16px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .device-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .device-card:hover::after { opacity: 1; }
+
+        .device-card:hover {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            padding: 12px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 0.85rem;
+            border-color: rgba(74, 158, 255, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .device-icon-wrap {
+            width: 48px; height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: 0.2s;
-        }
-
-        .btn i { 
-            font-size: 1.2rem; 
-            color: var(--accent-blue);
-            width: 20px;
-            text-align: center;
-        }
-
-        .btn:hover {
-            background: var(--accent-blue);
-            color: white;
-            box-shadow: 0 5px 20px rgba(74, 158, 255, 0.4);
-        }
-        
-        .btn:hover i { color: white; }
-
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .item { 
-            font-size: 0.9rem; 
+            margin: 0 auto 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 1.1rem;
             color: var(--text-dim);
-            border-left: 2px solid rgba(74, 158, 255, 0.2);
-            padding-left: 12px;
+            transition: 0.3s;
         }
-        
-        .item b { color: var(--text-main); display: block; margin-top: 2px; }
 
-        .footer { margin-top: 40px; opacity: 0.5; font-size: 0.8rem; }
+        .device-card:hover .device-icon-wrap {
+            background: rgba(74, 158, 255, 0.08);
+            color: var(--accent);
+            border-color: rgba(74, 158, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .device-type {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .device-name { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-top: 6px; line-height: 1.3; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .footer-line {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 0 auto 15px;
+        }
+
+        /* ── Animations ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .stagger-1 { transition-delay: 0.05s; }
+        .stagger-2 { transition-delay: 0.1s; }
+        .stagger-3 { transition-delay: 0.15s; }
+        .stagger-4 { transition-delay: 0.2s; }
+        .stagger-5 { transition-delay: 0.25s; }
+        .stagger-6 { transition-delay: 0.3s; }
+
+        .profile-section .avatar-wrapper { animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .profile-section .name { animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+        .profile-section .tagline { animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+        .profile-section .bio-text { animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
+        .profile-section .tags { animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .music-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+            margin-left: auto;
+        }
+
+        .music-bar {
+            width: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: music-bounce 1.2s ease-in-out infinite;
+        }
+
+        .music-bar:nth-child(1) { animation-delay: 0s; height: 6px; }
+        .music-bar:nth-child(2) { animation-delay: 0.2s; height: 10px; }
+        .music-bar:nth-child(3) { animation-delay: 0.4s; height: 4px; }
+        .music-bar:nth-child(4) { animation-delay: 0.1s; height: 8px; }
+
+        @keyframes music-bounce {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.5); }
+        }
+
+        .top-line {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), var(--accent3), transparent);
+            z-index: 1000;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .name { font-size: 2.2rem; }
+            .links-grid { grid-template-columns: 1fr; }
+            .devices-grid { grid-template-columns: 1fr; }
+            .nav-dots { display: none; }
+            .main { padding: 20px 16px 40px; }
+            .profile-section { padding: 40px 0 30px; }
+            .card { padding: 22px; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(74, 158, 255, 0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(74, 158, 255, 0.4); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://github.com/mrvokintos.png" alt="Profile" class="profile-img">
-        <h1>mrvokintos</h1>
-        <div class="subtitle">Engineer & Software Tester</div>
 
-        <div class="card">
-            <span class="section-title">About Me</span>
-            <p style="margin: 0; color: var(--text-dim); line-height: 1.6;">
-                Wassup! I'm an engineer and software tester. Bilingual in Eng/Rus. Idk what else to write here lol
-            </p>
+<div class="top-line"></div>
+<canvas id="particles-canvas"></canvas>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+<div class="ambient ambient-3"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="nav-dots">
+    <div class="nav-dot active" data-label="Profile" onclick="scrollToSection('profile')"></div>
+    <div class="nav-dot" data-label="Links" onclick="scrollToSection('links')"></div>
+    <div class="nav-dot" data-label="PC Specs" onclick="scrollToSection('specs')"></div>
+    <div class="nav-dot" data-label="Devices" onclick="scrollToSection('devices')"></div>
+</div>
+
+<div class="main">
+
+    <section class="profile-section" id="profile">
+        <div class="avatar-wrapper">
+            <div class="avatar-ring-glow"></div>
+            <div class="avatar-ring"></div>
+            <img src="https://github.com/mrvokintos.png" alt="mrvokintos" class="profile-img">
         </div>
-
-        <div class="card">
-            <span class="section-title">Contacts & Follow</span>
-            <div class="links-grid">
-                <a href="https://t.me/mrvokintos" class="btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
-                <a href="https://github.com/mrvokintos" class="btn"><i class="fa-brands fa-github"></i> GitHub</a>
-                <a href="https://4pda.to/forum/index.php?showuser=11599467" class="btn"><i class="fa-solid fa-code"></i> 4PDA</a>
-                <a href="https://x.com/mr_vokintos" class="btn"><i class="fa-brands fa-x-twitter"></i> X / Twitter</a>
-                <a href="https://steamcommunity.com/id/mr_vokintos" class="btn"><i class="fa-brands fa-steam"></i> Steam</a>
-                <a href="https://t.me/mr_vokintos" class="btn"><i class="fa-solid fa-bullhorn"></i> Blog</a>
-            </div>
+        <h1 class="name">mrvokintos</h1>
+        <div class="tagline">
+            <span id="typed-text"></span><span class="typing-cursor"></span>
         </div>
-
-        <div class="card">
-            <span class="section-title">PC Specs</span>
-            <div class="specs-grid">
-                <div class="item">CPU <b>Ryzen 5 7600X + OC</b></div>
-                <div class="item">RAM <b>32GB DDR5 6400mhz</b></div>
-                <div class="item">GPU <b>RTX 4070 TI SUPER 16GB</b></div>
-                <div class="item">OS <b>CachyOS 🐧</b></div>
-                <div class="item">Mouse <b>Logitech G502 X Lightspeed</b></div>
-                <div class="item">Keyboard <b>Corsair K70 TKL Champion Series</b></div>
-            </div>
+        <p class="bio-text">
+            Wassup! I'm an <span class="highlight">engineer</span> and <span class="highlight">software tester</span>.
+            Bilingual in <span class="highlight">🇬🇧 / 🇷🇺</span>. Passionate about tech, tinkering with stuff, and breaking things before users do
+        </p>
+        <div class="tags">
+            <span class="tag"># engineer</span>
+            <span class="tag"># qa-tester</span>
+            <span class="tag"># linux</span>
+            <span class="tag"># tech-enthusiast</span>
         </div>
+    </section>
 
-        <div class="card">
-            <span class="section-title">Devices</span>
-            <div class="specs-grid">
-                <div class="item">Primary <b>Nothing Phone (3a)</b></div>
-                <div class="item">Secondary <b>Tecno Pova 6 Pro</b></div>
-                <div class="item">Legacy <b>Xiaomi Mi A3</b></div>
-                <div class="item">Audio <b>Redmi Buds 4 Lite</b></div>
-            </div>
+    <div class="card reveal" id="links">
+        <div class="card-glow"></div>
+        <div class="section-header">
+            <div class="section-icon"><i class="fa-solid fa-link"></i></div>
+            <span class="section-title">Contacts & Socials</span>
         </div>
-
-        <div class="footer">Vibecoder | 2026</div>
+        <div class="links-grid">
+            <a href="https://t.me/mrvokintos" class="btn btn-telegram reveal stagger-1" target="_blank">
+                <div class="btn-icon"><i class="fa-brands fa-telegram"></i></div>
+                Telegram
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+            <a href="https://github.com/mrvokintos" class="btn btn-github reveal stagger-2" target="_blank">
+                <div class="btn-icon"><i class="fa-brands fa-github"></i></div>
+                GitHub
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+            <a href="https://4pda.to/forum/index.php?showuser=11599467" class="btn btn-4pda reveal stagger-3" target="_blank">
+                <div class="btn-icon"><i class="fa-solid fa-code"></i></div>
+                4PDA
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+            <a href="https://x.com/mr_vokintos" class="btn btn-twitter reveal stagger-4" target="_blank">
+                <div class="btn-icon"><i class="fa-brands fa-x-twitter"></i></div>
+                X / Twitter
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+            <a href="https://steamcommunity.com/id/mr_vokintos" class="btn btn-steam reveal stagger-5" target="_blank">
+                <div class="btn-icon"><i class="fa-brands fa-steam"></i></div>
+                Steam
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+            <a href="https://t.me/mr_vokintos" class="btn btn-blog reveal stagger-6" target="_blank">
+                <div class="btn-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                Blog
+                <i class="fa-solid fa-arrow-right arrow"></i>
+            </a>
+        </div>
     </div>
+
+    <div class="card reveal" id="specs">
+        <div class="card-glow"></div>
+        <div class="section-header">
+            <div class="section-icon"><i class="fa-solid fa-desktop"></i></div>
+            <span class="section-title">PC Build</span>
+            <div class="music-bars">
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+            </div>
+        </div>
+        <div class="specs-list">
+            <div class="spec-item reveal stagger-1">
+                <div class="spec-icon"><i class="fa-solid fa-microchip"></i></div>
+                <div>
+                    <div class="spec-label">Processor</div>
+                    <div class="spec-value">Ryzen 5 7600X + OC</div>
+                </div>
+            </div>
+            <div class="spec-item reveal stagger-2">
+                <div class="spec-icon"><i class="fa-solid fa-memory"></i></div>
+                <div>
+                    <div class="spec-label">Memory</div>
+                    <div class="spec-value">32GB DDR5 6400MHz</div>
+                </div>
+            </div>
+            <div class="spec-item reveal stagger-3">
+                <div class="spec-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                    <div class="spec-label">Graphics</div>
+                    <div class="spec-value">RTX 4070 Ti SUPER 16GB</div>
+                </div>
+            </div>
+            <div class="spec-item reveal stagger-4">
+                <div class="spec-icon"><i class="fa-brands fa-linux"></i></div>
+                <div>
+                    <div class="spec-label">Operating System</div>
+                    <div class="spec-value">CachyOS 🐧 (1y uptime)</div>
+                </div>
+            </div>
+            <div class="spec-item reveal stagger-5">
+                <div class="spec-icon"><i class="fa-solid fa-computer-mouse"></i></div>
+                <div>
+                    <div class="spec-label">Mouse</div>
+                    <div class="spec-value">Logitech G502 X Lightspeed</div>
+                </div>
+            </div>
+            <div class="spec-item reveal stagger-6">
+                <div class="spec-icon"><i class="fa-regular fa-keyboard"></i></div>
+                <div>
+                    <div class="spec-label">Keyboard</div>
+                    <div class="spec-value">Corsair K70 TKL Champion Series</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card reveal" id="devices">
+        <div class="card-glow"></div>
+        <div class="section-header">
+            <div class="section-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <span class="section-title">Devices</span>
+        </div>
+        <div class="devices-grid">
+            <div class="device-card reveal stagger-1">
+                <div class="device-icon-wrap"><i class="fa-solid fa-star"></i></div>
+                <div class="device-type">Primary</div>
+                <div class="device-name">Nothing Phone (3a)</div>
+            </div>
+            <div class="device-card reveal stagger-2">
+                <div class="device-icon-wrap"><i class="fa-solid fa-mobile-screen"></i></div>
+                <div class="device-type">Secondary</div>
+                <div class="device-name">Tecno Pova 6 Pro</div>
+            </div>
+            <div class="device-card reveal stagger-3">
+                <div class="device-icon-wrap"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="device-type">Legacy</div>
+                <div class="device-name">Xiaomi Mi A3</div>
+            </div>
+            <div class="device-card reveal stagger-4">
+                <div class="device-icon-wrap"><i class="fa-solid fa-headphones"></i></div>
+                <div class="device-type">Audio</div>
+                <div class="device-name">Redmi Buds 4 Lite</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer reveal">
+        <div class="footer-line"></div>
+        crafted with ☕ by <span style="color: var(--accent);">mrvokintos</span> · 2026
+    </div>
+
+</div>
+
+<script>
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let mouse = { x: -1000, y: -1000 };
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.3;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.4 + 0.15;
+        this.baseOpacity = this.opacity;
+        this.pulse = Math.random() * Math.PI * 2;
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.pulse += 0.01;
+        this.opacity = this.baseOpacity + Math.sin(this.pulse) * 0.12;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+            this.opacity = Math.min(1, this.baseOpacity + (150 - dist) / 150 * 0.5);
+            this.x += dx / dist * 0.5;
+            this.y += dy / dist * 0.5;
+        }
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(120, 180, 255, ${this.opacity})`;
+        ctx.fill();
+    }
+}
+
+for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+function drawLines() {
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(120, 180, 255, ${0.05 * (1 - dist / 120)})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawLines();
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+const cursorGlow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    cursorGlow.style.left = e.clientX + 'px';
+    cursorGlow.style.top = e.clientY + 'px';
+});
+
+document.querySelectorAll('.card').forEach(card => {
+    const glow = card.querySelector('.card-glow');
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        glow.style.left = (e.clientX - rect.left) + 'px';
+        glow.style.top = (e.clientY - rect.top) + 'px';
+    });
+});
+
+const phrases = ['Engineer & Software Tester', 'Linux Enthusiast', 'Tech Explorer', 'Bug Hunter'];
+let phraseIdx = 0, charIdx = 0, deleting = false;
+const typedEl = document.getElementById('typed-text');
+
+function typeLoop() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+        typedEl.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) { deleting = true; setTimeout(typeLoop, 2000); return; }
+        setTimeout(typeLoop, 80);
+    } else {
+        typedEl.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; setTimeout(typeLoop, 400); return; }
+        setTimeout(typeLoop, 40);
+    }
+}
+setTimeout(typeLoop, 1000);
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const sections = ['profile', 'links', 'specs', 'devices'];
+const dots = document.querySelectorAll('.nav-dot');
+
+window.addEventListener('scroll', () => {
+    let current = 0;
+    sections.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= window.innerHeight / 2) current = i;
+    });
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
+});
+
+function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.querySelectorAll('.tag').forEach(tag => {
+    tag.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        this.style.transform = `translateY(-2px) rotateX(${-y * 0.3}deg) rotateY(${x * 0.3}deg)`;
+    });
+    tag.addEventListener('mouseleave', function() { this.style.transform = ''; });
+});
+</script>
+
 </body>
 </html>
