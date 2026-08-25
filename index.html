@@ -313,18 +313,6 @@
         justify-content: space-between;
         gap: clamp(28px, 4vw, 48px);
       }
-      .hero-main::after {
-        content: "";
-        position: absolute;
-        width: 310px;
-        height: 310px;
-        right: -100px;
-        bottom: -110px;
-        border: 2px solid currentColor;
-        border-radius: 50%;
-        opacity: 0.16;
-        animation: orbit 24s linear infinite;
-      }
       .hero-meta {
         display: flex;
         justify-content: space-between;
@@ -953,11 +941,6 @@
         50% {
           transform: scale(0.6);
           opacity: 0.45;
-        }
-      }
-      @keyframes orbit {
-        to {
-          transform: rotate(360deg);
         }
       }
       @keyframes nothing-press {
